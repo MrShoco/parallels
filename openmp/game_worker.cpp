@@ -22,7 +22,7 @@ void GameWorker::Run(size_t steps) {
 
     size_t step = 0;
     #pragma omp parallel num_threads(threads_count_) shared(step)
-    for (; step < steps && !stopped_; step++) {
+    for (; step < steps && !stopped_;) {
         #pragma omp barrier
         #pragma omp single
             step++;
@@ -37,9 +37,7 @@ void GameWorker::Run(size_t steps) {
  
 
         #pragma omp single
-        {
             swap(table_, next_table_);
-        }
     }
     running_ = false;
 }
