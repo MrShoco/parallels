@@ -22,10 +22,10 @@ class Table {
     size_t neighbourColumn(size_t column, size_t direction);
     bool neighbourCellValue(size_t row, size_t column, 
                             int direction_row, int direction_column);
-    vector<short>* getRow(size_t row_number) {
-        return &grid_[row_number];
+    const short* getRow(size_t row_number) const {
+        return &grid_[row_number][0];
     }
-    void setRow(size_t row_number, vector<short>& row) {
+    void setRow(size_t row_number, std::vector<short>& row) {
         grid_[row_number] = row;
     }
 

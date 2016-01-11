@@ -1,39 +1,41 @@
 #ifndef GAME_WORKER_H
 #define GAME_WORKER_H
 
+#include <mpi.h>
+
 #include "table.h"
 
 class GameWorker {
     public:
     GameWorker();
-    GameWorker(Table table, size_t threads_number);
+    GameWorker(Table table, size_t threads_count, size_t node_id);
 
     void Status();
     void Run(size_t steps);
     void Stop();
     void initializeThreads(size_t treads_number);
 
-    bool isRunning() {
-        return running_;
+    size_t firstRow(size_t node_id) {
+        return rowSize() * (node_id - 1);
     }
-    bool isStopped() {
-        return stopped_;
-    }
-
-    size_t firstRow(size_t node_id = node_id_) {
-        return rowSize() * node_id;
-    }
-    size_t lastRow(size_t node_id = node_id_) {
-        return std::min(firstRow(node_id) + rowSize(), table.height());
+    size_t lastRow(size_t node_id) {
+        return std::min(firstRow(node_id) + rowSize(), table_.height()) - 1;
     }
 
     Table table_;
     Table next_table_;
     private:
 
-    size_t rowSize() {
-        return (table.height() + threads_count_ - 1) / treads_count_;
+    size_t firstRow() {
+        return firstRow(node_id_);
     }
+    size_t lastRow() {
+        return lastRow(node_id_);
+    }
+    size_t rowSize() {
+        return (table_.height() + threads_count_ - 1) / threads_count_;
+    }
+
     size_t threads_count_;
     size_t node_id_;
     size_t prev_node_id_;

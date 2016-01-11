@@ -36,17 +36,17 @@ void Table::setCell(size_t row, size_t column, bool value) {
 }
 
 
-size_t neighbourRow(size_t row, size_t direction) {
+size_t Table::neighbourRow(size_t row, size_t direction) {
     return (row + height() + direction) % height();
 }
 
-size_t neighbourColumn(size_t column, size_t direction) {
+size_t Table::neighbourColumn(size_t column, size_t direction) {
     return (column + width() + direction) % width();
 }
 
 bool Table::neighbourCellValue(size_t row, size_t column,
                                int direction_row, int direction_column) {
-    return grid_[neighbourRow][neighbourColumn];
+    return grid_[neighbourRow(row, direction_row)][neighbourColumn(column, direction_column)];
 }
 
 bool Table::getNextCellValue(size_t row, size_t column) {
