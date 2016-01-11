@@ -34,13 +34,14 @@ void* runGame(void* arg) {
 }
 
 int main() {
+    string cmd;
+    GameWorker worker;
+
     omp_set_nested(1);
     #pragma omp parallel num_threads(2)
     {
         #pragma omp single
         {
-            string cmd;
-            GameWorker worker;
             helpOutput();
             
             while (true) {
